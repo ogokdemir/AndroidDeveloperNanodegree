@@ -53,9 +53,15 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
+
         populateUI(sandwich);
+
+        //I applied your the reviewer's suggestion on adding a placeholder and an error image to the image fetch.
+        //Thank you very much for pointing out to a better practice of using Picasso and Butterknife libraries!
         Picasso.with(this)
                 .load(sandwich.getImage())
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.error)
                 .into(mSandwichImageView);
 
         setTitle(sandwich.getMainName());
