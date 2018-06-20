@@ -17,13 +17,27 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position"; // constant used for tagging extras sent from the MainActivity.
     private static final int DEFAULT_POSITION = -1; // which means nothing came through along with the intent.
 
-    private ImageView mSandwichImageView;
-    private TextView mPlaceOfOriginTextView, mDescriptionTextView, mIngredientsTextView, mAkaTextView, mMainNameTextView;
+// I took my reviewer's awesome advice and shifted my practice from calling findViewById() for each item to using ButterKnife!
+    @BindView(R.id.tv_origin)
+    TextView mPlaceOfOriginTextView;
+    @BindView(R.id.tv_description)
+    TextView mDescriptionTextView;
+    @BindView(R.id.tv_ingredients)
+    TextView mIngredientsTextView;
+    @BindView(R.id.tv_also_known_as)
+    TextView mAkaTextView;
+    @BindView(R.id.tv_main_name)
+    TextView mMainNameTextView;
+    @BindView(R.id.image_iv)
+    ImageView mSandwichImageView;
 
 
     @Override
@@ -31,7 +45,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        instantiateWidgets(); // finds and instantiates all the UI elements.
+
+        ButterKnife.bind(this); // Important to calling static method otherwise the widgets won't get instantiated.
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -106,17 +121,4 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-
-    /**
-     * Helper method for finding and instantiating the UI Widgets.
-     * Purpose: Cleaning up the onCreate() a little bit.
-     */
-    private void instantiateWidgets(){
-        mSandwichImageView = (ImageView) findViewById(R.id.image_iv);
-        mAkaTextView = (TextView) findViewById(R.id.tv_also_known_as);
-        mDescriptionTextView = (TextView) findViewById(R.id.tv_description);
-        mIngredientsTextView = (TextView) findViewById(R.id.tv_ingredients);
-        mPlaceOfOriginTextView = (TextView) findViewById(R.id.tv_origin);
-        mMainNameTextView = (TextView)findViewById(R.id.tv_main_name);
-     }
 }
