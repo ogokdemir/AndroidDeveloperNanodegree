@@ -87,6 +87,11 @@ public class DetailActivity extends AppCompatActivity {
         else
             mPlaceOfOriginTextView.setText(sandwich.getPlaceOfOrigin());
 
+        /*
+         I took my reviewer's great advice on using TextUtils.join() method instead of looping through
+         ingredients and alsoKnownAs lists. My code is much more concise and resource-wise economical this way, thanks!
+        */
+
         List<String> ingredients = sandwich.getIngredients();
         if(ingredients.size()==0)
             mIngredientsTextView.setText("Unknown Ingredients");
