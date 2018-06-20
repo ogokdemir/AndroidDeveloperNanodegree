@@ -3,6 +3,7 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,31 +88,16 @@ public class DetailActivity extends AppCompatActivity {
             mPlaceOfOriginTextView.setText(sandwich.getPlaceOfOrigin());
 
         List<String> ingredients = sandwich.getIngredients();
-        //using a StringBuilder since TextView doesn't have a substring() method. I want to remove the "," at the end of the list.
-        StringBuilder ingredientsPile = new StringBuilder();
+        if(ingredients.size()==0)
+            mIngredientsTextView.setText("Unknown Ingredients");
+        else
+            mIngredientsTextView.setText(TextUtils.join(", ", ingredients));
 
-        //Looping through the list of
-        for(String ingredient : ingredients){
-            ingredientsPile.append(ingredient).append(", ");
-            // removing the "," at the end.
-            String finaltext = ingredientsPile.toString().substring(0,ingredientsPile.length()-2);
-            mIngredientsTextView.setText(finaltext);
-
-        }
-
-        //using a StringBuilder since TextView doesn't have a substring() method. I want to remove the "," at the end of the list.
-        StringBuilder akaPile = new StringBuilder();
         List<String> akas = sandwich.getAlsoKnownAs();
-
-        //Looping through the list of "also known as", since this is a list I converted from a JSONArray.
-        for(String aka : akas){
-            akaPile.append(aka).append(", ");
-            String text = akaPile.toString().substring(0, akaPile.length()-2); //removing the "," at the end.
-            mAkaTextView.setText(text);
-        }
-
-        if(akas.size() == 0)
+        if(akas.size()==0)
             mAkaTextView.setText("Not Applicable");
+        else
+        mAkaTextView.setText(TextUtils.join(", ", sandwich.getAlsoKnownAs()));
 
     }
 
