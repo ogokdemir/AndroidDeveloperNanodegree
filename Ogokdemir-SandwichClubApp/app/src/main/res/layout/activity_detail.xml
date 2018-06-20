@@ -5,15 +5,18 @@
     android:layout_height="match_parent"
     tools:context="com.udacity.sandwichclub.DetailActivity"
     android:orientation="vertical"
-    android:paddingTop="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingTop="@dimen/padding_dimen"
+    android:paddingLeft="@dimen/padding_dimen"
+    android:paddingRight="@dimen/padding_dimen"
     android:background="@color/orange"
     >
 
 
     <!--As the reviewer suggested, this layout file has been modified to maintain the scrollable UI
     even when the screen orientation changes.-->
+
+    <!--I improved the code by removing all the hard-coded dimensions. I've moved all those to dimens.xml for localization-->
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,17 +36,19 @@
                 android:gravity="center"
                 android:text="@string/app_name"
                 android:textColor="@color/blue"
-                android:textSize="34sp"
+                android:textSize="@dimen/title_size_dimen"
                 android:textStyle="bold" />
 
 
             <ImageView
                 android:id="@+id/image_iv"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/image_height_dimen"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/sandwich_picture_content_description"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
+                />
 
             =
 
@@ -51,71 +56,71 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:text="@string/detail_main_name_label"
                 android:textColor="@color/blue"
-                android:textSize="22sp"
+                android:textSize="@dimen/info_title_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_main_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:textColor="@color/dark_green"
-                android:textSize="18sp"
+                android:textSize="@dimen/info_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:text="@string/detail_place_of_origin_label"
                 android:textColor="@color/blue"
-                android:textSize="22sp"
+                android:textSize="@dimen/info_title_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_origin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:textColor="@color/dark_green"
-                android:textSize="18sp"
+                android:textSize="@dimen/info_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:text="@string/detail_also_known_as_label"
                 android:textColor="@color/blue"
-                android:textSize="22sp"
+                android:textSize="@dimen/info_title_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_also_known_as"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:textColor="@color/dark_green"
-                android:textSize="18sp"
+                android:textSize="@dimen/info_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:text="@string/detail_ingredients_label"
                 android:textColor="@color/blue"
-                android:textSize="22sp"
+                android:textSize="@dimen/info_title_dimen"
                 android:textStyle="bold"
 
                 />
@@ -124,31 +129,31 @@
                 android:id="@+id/tv_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:textColor="@color/dark_green"
-                android:textSize="18sp"
+                android:textSize="@dimen/info_dimen"
                 android:textStyle="bold" />
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:text="@string/detail_description_label"
                 android:textColor="@color/blue"
-                android:textSize="22sp"
+                android:textSize="@dimen/info_title_dimen"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/bottom_margin_bw_info"
                 android:fontFamily="casual"
                 android:textColor="@color/dark_green"
-                android:textSize="18sp"
+                android:textSize="@dimen/info_dimen"
                 android:textStyle="bold" />
 
         </LinearLayout>
