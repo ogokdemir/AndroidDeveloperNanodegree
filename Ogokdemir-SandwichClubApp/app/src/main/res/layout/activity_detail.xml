@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.sandwichclub.DetailActivity"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="@color/orange"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="34sp"
+            android:textColor="@color/blue"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="casual"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/sandwich_picture_content_description"
+            android:scaleType="centerCrop" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_main_name_label"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:fontFamily="casual"
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_main_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_green"
+                android:fontFamily="casual"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_place_of_origin_label"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:fontFamily="casual"
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_origin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_green"
+                android:fontFamily="casual"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_also_known_as_label"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:fontFamily="casual"
+                android:textSize="22sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_also_known_as"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/dark_green"
+                android:fontFamily="casual"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_ingredients_label"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:textSize="22sp"
+                android:fontFamily="casual"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/dark_green"
+                android:fontFamily="casual"
+                android:textSize="18sp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detail_description_label"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/blue"
+                android:textSize="22sp"
+                android:fontFamily="casual"
+                />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_green"
+                android:fontFamily="casual"
+                android:textSize="18sp"
+                />
+
+    </LinearLayout>
+
+  </ScrollView>
+
+</LinearLayout>
