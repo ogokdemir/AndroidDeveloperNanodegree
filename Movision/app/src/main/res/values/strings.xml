@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Movision</string>
+
+    <!--Never share this api key on Github!-->
+    <string name="API_KEY">c4549f30f17241f3794cb1114c2f80ed</string>
+
 </resources>
