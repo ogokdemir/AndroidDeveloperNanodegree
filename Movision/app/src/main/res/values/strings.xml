@@ -1,7 +1,20 @@
 <resources>
     <string name="app_name">Movision</string>
 
-    <!--Never share this api key on Github!-->
-    <string name="API_KEY">c4549f30f17241f3794cb1114c2f80ed</string>
+    <!--Constant strings for specifying the query criteria in the api call.-->
+    <string name="sort_by_popular">popular</string>
+    <string name="sort_by_top_rated">top_rated</string>
+    <string name="sort_by_upcoming">upcoming</string>
+    <string name="sort_by_now_playing">now_playing</string>
+
+
+    <!--Serialized names of the member fields in the model class, Movie-->
+
+    <string name="serialized_name_title">title</string>
+    <string name="serialized_poster_url">poster_path</string>
+    <string name="serialized_overview">overview</string>
+    <string name="serialized_average_rating">vote_average</string>
+    <string name="serialized_release_date">release_date</string>
+
 
 </resources>

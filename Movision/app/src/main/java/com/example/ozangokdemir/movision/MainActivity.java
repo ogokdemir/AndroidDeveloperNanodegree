@@ -1,6 +1,8 @@
 package com.example.ozangokdemir.movision;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,4 +38,19 @@ Recycler view implementation
 public class MainActivity extends AppCompatActivity {
 
 
+    private String mChoosenSortParameter; // will be set by the menu call.
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //The user of the code will pass their own api key to the FetchMovieDataTask creation.
+
+        FetchMovieDataTask task = new FetchMovieDataTask("INSERT API KEY HERE!");
+
+        //The onClickMenuItem method will set the mChoosenSortParameter method, which will update the parameter of execute().
+
+        task.execute(getString(R.string.sort_by_popular));
+    }
 }
