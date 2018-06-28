@@ -23,7 +23,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
 
     private String mApiKey; //set in the constructor, used in the formApiCall()
 
-    Movie[] movies;
+    private Movie[] movies;
 
 
     /**
