@@ -8,6 +8,9 @@
     <string name="sort_by_upcoming">upcoming</string>
     <string name="sort_by_now_playing">now_playing</string>
 
+    <!--My default sort criteria is top rated movies. This is what will show up when the app is launched.-->
+    <string name="sort_by_default">top_rated</string>
+
 
     <!--Serialized names of the member fields in the model class, Movie-->
     <string name="serialized_name_title">title</string>
@@ -15,6 +18,13 @@
     <string name="serialized_overview">overview</string>
     <string name="serialized_average_rating">vote_average</string>
     <string name="serialized_release_date">release_date</string>
+
+
+    <!--Action bar menu item title strings-->
+    <string name="menu_title_popular">Popular Movies</string>
+    <string name="menu_title_top_rated">Top-rated Movies</string>
+    <string name="menu_title_upcoming">Upcoming Movies</string>
+    <string name="menu_title_now_playing">Now Playing</string>
 
 
 </resources>

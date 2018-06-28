@@ -14,12 +14,16 @@ import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private Movie[] dataSource;
+    private Movie[] mDataSource;
+
+    /*
+        Constructor takes in the initial data source of the adapter.
+        This data source will be dynamically updatable through a public setter.
+     */
 
     public MovieAdapter(Movie[] dataSource) {
 
-        this.dataSource = dataSource;
-
+        mDataSource = dataSource;
     }
 
     @NonNull
@@ -46,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         //This is where the Picasso magic happens!
 
         Picasso.with(holder.mMoviePoster.getContext())
-                .load(dataSource[position].getmPosterUri())
+                .load(mDataSource[position].getmPosterUri())
                 .error(R.drawable.error)
                 .placeholder(R.drawable.loading)
                 .into(holder.mMoviePoster);
@@ -56,7 +60,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return dataSource.length;
+        return mDataSource.length;
+    }
+
+
+    public void updateAdapterDataSource(Movie[] movies){
+
+        mDataSource = movies;
     }
 
 
