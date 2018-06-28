@@ -18,7 +18,7 @@ public class JsonUtils {
     // These are keys in the raw TMDB API JSON response. These will be used for serialization and deserialization.
 
     static final String JSON_TITLE_KEY = "title";
-    static final String JSON_POSTER_URL_KEY = "poster_path";
+    static final String JSON_POSTER_URI_KEY = "poster_path";
     static final String JSON_OVERVIEW_KEY = "overview";
     static final String JSON_AVG_RATING_KEY = "vote_average";
     static final String JSON_RELEASE_DATE_KEY = "release_date";
