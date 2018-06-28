@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dimen_padding">16dp</dimen>
+    <dimen name="dimen_margin_bottom">16dp</dimen>
+    <dimen name="dimen_card_elevation">1dp</dimen>
+    <dimen name="dimen_cardview_corner_radius">5dp</dimen>
 </resources>
