@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:layout_weight="1"
-            android:layout_marginRight="@dimen/general_margin"
+            android:layout_marginEnd="@dimen/general_margin"
             />
 
         <LinearLayout

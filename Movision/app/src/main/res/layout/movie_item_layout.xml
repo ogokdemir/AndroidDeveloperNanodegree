@@ -8,8 +8,6 @@
     cardview:cardCornerRadius="@dimen/dimen_cardview_corner_radius"
     cardview:cardElevation="@dimen/dimen_card_elevation"
     cardview:cardUseCompatPadding="true"
-    android:clickable="true"
-
     >
 
 

@@ -1,7 +1,7 @@
 package com.example.ozangokdemir.movision;
 
-public interface MovieItemClickListener {
+interface MovieItemClickListener {
 
-    public void onMovieItemClick(int movieItemIdx);
+     void onMovieItemClick(int movieItemIdx);
 
 }

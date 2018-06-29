@@ -5,28 +5,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
 import org.parceler.Parcels;
-
 import java.util.concurrent.ExecutionException;
-
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -36,9 +26,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private static final String TAG = MainActivity.class.getSimpleName();
     private String mChoosenSortParameter;
     @BindView(R.id.rw_grid_container) RecyclerView recyclerView;
-    FetchMovieDataTask asyncTask;
+    private FetchMovieDataTask asyncTask;
     private Movie[] currentMovieList;
     private MovieAdapter adapter;
+    private GridLayoutManager layoutManager;
 
 
     @Override
@@ -47,19 +38,33 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        //Initial setup.
         mChoosenSortParameter = getString(R.string.sort_by_default);
-        setup();
+        layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
+
+        fetchMovies();
 
     }
 
 
-    private void refreshRecyclerView(){
+    /**
+     * Instantiates an asynctask object, executes, passes the fetched data to the adapter.
+     */
 
-    }
+    public void fetchMovies(){
 
-    private void setup(){
+        /*
+            Note to reviewer:
+
+            I know that instantiating a new asynctask on each call is not the best practice here and that I need to use
+            an AsyncTaskLoader but I don't know how to use those yet.
+         */
+
         asyncTask = new FetchMovieDataTask(getResources().getString(R.string.api_key));
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         currentMovieList = executeAsynctaskWithNetworkCheck(asyncTask);
 
         if(currentMovieList != null) // if there was connection and some movies could be fetched:
@@ -67,11 +72,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         else
             return;
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.rw_grid_container);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setHasFixedSize(true);
+
     }
 
 
@@ -88,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         if(isOnline()) {
 
-            setContentView(R.layout.activity_main);
-
-            setup();
+            fetchMovies();
 
         }else{
             notifyUserOfNoInternetConnection();
@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
 
     }
+
+    /**
+     *
+     * @param task The Asynctask object on which the execute() is being called.
+     * @return Movie array that FetchMovieDataTask returns.
+     */
 
     private Movie[] executeAsynctaskWithNetworkCheck(FetchMovieDataTask task){
 
@@ -184,18 +190,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * This elegant piece of code checks the network connectivity. Source: stackoverflow.com
-     *
-     * @return State of connectivity - whether the device has network connection.
-     */
-
-    private boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
 
 
     /**
@@ -215,8 +209,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 
+
     /**
      * Helper method for notifying the user that their device is not connected to the internet.
+     *
+     * Displays an alert dialog and prompts the user for an action: reconnect and try again or exit the app.
+     *
      */
 
     private void notifyUserOfNoInternetConnection(){
@@ -234,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                         /*
                             User reconnected and wants to try again.
                          */
-                        setup();
+                        fetchMovies();
                     }
                 })
                 .setNegativeButton(getString(R.string.alert_dialog_negative_button),new DialogInterface.OnClickListener() {
@@ -252,6 +250,19 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         // show it
         alertDialog.show();
+    }
+
+
+    /**
+     * This method checks the network connection of the device. Source: stackoverflow.com
+     *
+     * @return whether the device has connection or not.
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }

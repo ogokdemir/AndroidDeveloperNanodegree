@@ -10,9 +10,10 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("WeakerAccess")
 public class DetailActivity extends AppCompatActivity {
 
-    @BindView (R.id.iw_detail_activity_poster) ImageView mMoviePosterIw;
+    @BindView (R.id.iw_detail_activity_poster)ImageView mMoviePosterIw;
     @BindView(R.id.tw_detail_activity_rating) TextView mAvgRatingTw;
     @BindView(R.id.tw_detail_activity_release_date) TextView mReleaseDataTw;
     @BindView(R.id.tw_detail_activity_overview) TextView mOverViewTw;
@@ -21,13 +22,11 @@ public class DetailActivity extends AppCompatActivity {
     //Extras that are sent to this activity will be passed and retrieved with this key.
     public static final String MOVIE_INTENT_KEY = "Detail Activity Mail Box";
 
-    private static final String TAG = DetailActivity.class.getSimpleName(); // for debugging purposes.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
         ButterKnife.bind(this);
 
         Intent intent = getIntent(); // will never be null.
@@ -56,6 +55,8 @@ public class DetailActivity extends AppCompatActivity {
         mReleaseDataTw.append("\n"+movie.getmReleaseDate());
         mTitleTw.setText(movie.getmTitle());
         mOverViewTw.setText(movie.getmOverview());
+
+        mMoviePosterIw.setContentDescription(getString(R.string.image_content_decription)+movie.getmTitle());
 
     }
 

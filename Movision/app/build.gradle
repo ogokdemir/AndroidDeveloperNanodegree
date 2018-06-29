@@ -26,6 +26,7 @@ dependencies {
 
 
     //Picasso 3rd party library dependency, used for: fetching images and binding them to views.
+    //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     //Butterknife 3rd party library dependency, used for: View and Resource binding.

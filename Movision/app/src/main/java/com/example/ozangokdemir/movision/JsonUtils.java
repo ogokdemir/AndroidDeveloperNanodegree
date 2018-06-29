@@ -13,7 +13,7 @@ import org.json.JSONObject;
  * @author Ozan Gokdemir
  * This class will contain the code for processing JSON.
  */
-public class JsonUtils {
+class JsonUtils {
 
     // These are keys in the raw TMDB API JSON response. These will be used for serialization and deserialization.
 
@@ -22,7 +22,7 @@ public class JsonUtils {
     static final String JSON_OVERVIEW_KEY = "overview";
     static final String JSON_AVG_RATING_KEY = "vote_average";
     static final String JSON_RELEASE_DATE_KEY = "release_date";
-    static final String JSON_RESULT_ARRAY_KEY = "results";
+    private static final String JSON_RESULT_ARRAY_KEY = "results";
 
     private static final String TAG = JsonUtils.class.getSimpleName(); // for debugging.
     /**
@@ -62,6 +62,6 @@ public class JsonUtils {
 
         }
 
-        return movies;
+        return null;
     }
 }

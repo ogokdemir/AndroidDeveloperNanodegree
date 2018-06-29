@@ -16,13 +16,13 @@ import java.net.URL;
 /**
  * String parameter sets the sort type - popular, top_rated, upcoming or now_playing.
  */
-public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
 
+class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
 
 
     private static final String TAG = FetchMovieDataTask.class.getSimpleName(); // for debugging purposes.
 
-    private String mApiKey; //set in the constructor, used in the formApiCall()
+    private final String mApiKey; //set in the constructor, used in the formApiCall()
 
     private Movie[] movies;
 

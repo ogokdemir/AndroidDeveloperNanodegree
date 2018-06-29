@@ -15,11 +15,13 @@ import com.squareup.picasso.Picasso;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private Movie[] mDataSource;
-    private MovieItemClickListener mMovieItemClickListener;
+    private final MovieItemClickListener mMovieItemClickListener;
 
-    /*
-        Constructor takes in the initial data source of the adapter.
-        This data source will be dynamically updatable through a public setter.
+    /**
+     * Parameters of the adapter are passed by the MainActivity upon instantiation of an adapter object.
+     *
+     * @param dataSource Movie array that the adapter uses as the data source.
+     * @param listener   A reference to the MainActivity's implementation of the MovieItemClickListener.
      */
 
     public MovieAdapter(Movie[] dataSource, MovieItemClickListener listener) {
@@ -39,9 +41,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(rowLayoutId, parent, attachToParentImmediately);
 
-        MovieViewHolder holder = new MovieViewHolder(view);
 
-        return holder;
+
+        return new MovieViewHolder(view);
     }
 
 
@@ -49,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
 
-        //This is where the Picasso magic happens!
+        //This is where the Picasso magic happens! Binding thumbnail poster to movie items in the grid.
 
         Picasso.with(holder.mMoviePoster.getContext())
                 .load(mDataSource[position].getmPosterUri())
@@ -57,6 +59,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .placeholder(R.drawable.loading)
                 .into(holder.mMoviePoster);
 
+        holder.mMoviePoster.setContentDescription("Picture for " +mDataSource[position].getmTitle());
     }
 
     @Override
@@ -64,6 +67,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mDataSource.length;
     }
 
+    /**
+     * Allows for passing new movie data dynamically to the existing adapter object.
+
+     * @param movies data source update, new movies.
+     */
 
     public void updateAdapterDataSource(Movie[] movies){
 
@@ -74,12 +82,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        ImageView mMoviePoster;
+        final ImageView mMoviePoster;
 
-        public MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView) {
             super(itemView);
 
-            mMoviePoster = (ImageView) itemView.findViewById(R.id.iw_movie_item);
+            mMoviePoster = itemView.findViewById(R.id.iw_movie_item);
             itemView.setOnClickListener(this);
         }
 

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Movision</string>
 
-    <!--Delete the api key before pushing code on Github!! -->
-    <string name="api_key">YOUR API KEY GOES HERE</string>
+    <!--Clients of my code should insert their own api key here. -->
+    <string name="api_key">YOUR API KEY GOES HERE!</string>
 
 
 
@@ -14,14 +14,6 @@
 
     <!--My default sort criteria is top rated movies. This is what will show up when the app is launched.-->
     <string name="sort_by_default">top_rated</string>
-
-
-    <!--Serialized names of the member fields in the model class, Movie-->
-    <string name="serialized_name_title">title</string>
-    <string name="serialized_poster_relative_url">poster_path</string>
-    <string name="serialized_overview">overview</string>
-    <string name="serialized_average_rating">vote_average</string>
-    <string name="serialized_release_date">release_date</string>
 
 
     <!--Action bar menu item title strings-->
@@ -36,12 +28,13 @@
     <string name="detail_activity_release_date">Release Date</string>
 
 
-    <string name="no_network_connection_error">There is no internet connection</string>
+    <!--Alert dialog constant strings-->
 
     <string name="alert_dialog_title">No Internet Connection</string>
     <string name="alert_dialog_message">Please check your connection and try again</string>
     <string name="alert_dialog_positive_button">Try again</string>
     <string name="alert_dialog_negative_button">Exit</string>
+    <string name="image_content_decription">Picture for</string>
 
 
 </resources>
