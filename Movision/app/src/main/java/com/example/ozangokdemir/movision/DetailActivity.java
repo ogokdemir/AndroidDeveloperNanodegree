@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import org.parceler.Parcels;
@@ -39,7 +38,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /*
-        Inflate the UI with data of the selected movie.
+        Helper method for inflating the UI with data of the selected movie.
      */
 
     private void displayMovieData(Movie movie){

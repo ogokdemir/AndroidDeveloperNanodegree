@@ -1,6 +1,9 @@
 package com.example.ozangokdemir.movision;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private FetchMovieDataTask asyncTask;
     private Movie[] currentMovieList;
     private MovieAdapter adapter;
+    private GridLayoutManager gridLayoutManager;
 
 
     @Override
@@ -39,27 +44,27 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         recyclerView = (RecyclerView)findViewById(R.id.rw_grid_container);
         mChoosenSortParameter = getString(R.string.sort_by_default); // default sort criteria is top rated movies.
 
-        //The user of the code will pass their own api key to the FetchMovieDataTask creation.
+
          asyncTask = new FetchMovieDataTask(getResources().getString(R.string.api_key));
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(
-                this, 2);
+         gridLayoutManager = new GridLayoutManager(this, 2);
 
 
-        try {
+      //  try {
 
-            currentMovieList = asyncTask.execute(mChoosenSortParameter).get();
+            currentMovieList = executeAsynctaskWithNetworkCheck(asyncTask);
             adapter = new MovieAdapter(currentMovieList,this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(gridLayoutManager);
             recyclerView.setHasFixedSize(true);
 
+            /*
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+*/
     }
 
     @Override
@@ -108,25 +113,52 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     /**
      * This method updates the current sorting criteria by instantiating a new asynctasks object and making a new api call.
      *
+     * Called when the user picks a different sorting from the option menu.
+     *
      * @param choosenSortParameter The sorting criteria that the user picks from the drop down action bar menu.
      */
     private void updateCurrentMovieList(String choosenSortParameter){
 
-        try {
+        if(isOnline()) {
+            setContentView(R.layout.activity_main);
+
+
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
             asyncTask = new FetchMovieDataTask(getString(R.string.api_key));
-            currentMovieList = asyncTask.execute(choosenSortParameter).get();
+
+            recyclerView = (RecyclerView) findViewById(R.id.rw_grid_container);
+            recyclerView.setLayoutManager(layoutManager);
+            currentMovieList = executeAsynctaskWithNetworkCheck(asyncTask);
+
+            adapter = new MovieAdapter(currentMovieList, this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setHasFixedSize(true);
+
+            //try {
+
+
+
+        }else{
+            Toast.makeText(getApplicationContext(), getString(R.string.no_network_connection_error), Toast.LENGTH_LONG)
+                    .show();
+
+            setContentView(R.layout.error_layout);
+        }
+        /*
         } catch (InterruptedException e) {
             e.printStackTrace();
             Log.d(TAG, "Asynctask HTTP GET Request was interrupted!");
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+*/
         //Updating the adapter's data source with the freshly updated Movie[] array.
         adapter.updateAdapterDataSource(currentMovieList);
 
         //setting the adapter of the recyclerview changes what user sees on the screen.
         recyclerView.setAdapter(adapter);
+
 
 
     }
@@ -142,4 +174,51 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         startActivity(toDetailActivity);
 
         }
+
+    /**
+     * This elegant piece of code checks the network connectivity. Source: stackoverflow.com
+     *
+     * @return State of connectivity - whether the device has network connection.
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    private Movie[] executeAsynctaskWithNetworkCheck(FetchMovieDataTask task){
+
+        Movie[] movieList = null;
+
+        if(isOnline()) {
+            try {
+                movieList = task.execute(mChoosenSortParameter).get();
+
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), getString(R.string.no_network_connection_error), Toast.LENGTH_LONG)
+                    .show();
+
+            setContentView(R.layout.error_layout);
+        }
+
+        return movieList;
+    }
+
+/*
+    private boolean isCurrentlyOnTheErrorScreen(){
+
+        boolean this.getWindow().getDecorView().findViewById(android.R.id.content).equals(R.layout.activity_main);
+
+    }
+*/
 }

@@ -1,6 +1,7 @@
 package com.example.ozangokdemir.movision;
 
 
+
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -37,6 +38,11 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
     }
 
 
+ /*
+        Note to the reviewer: I know this doInBackground() is huge and messy. I know that
+        I should have moved most of this code to a Utility class. Please bare with me here...
+  */
+
     @Override
     protected Movie[] doInBackground(String... params) {
 
@@ -54,10 +60,16 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
 
             Log.d(TAG, "Search Url: " + searchUrl);
 
-            //Establishing the HTTP connection.
+
+
+            //Establish HTTP Connection.
+
             urlConnection = (HttpURLConnection)searchUrl.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
+
+
+
 
             //Getting the input stream - the channel of information flow between the HTTP server and the phone.
             InputStream ioStream = urlConnection.getInputStream();
@@ -99,6 +111,7 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
             e.printStackTrace();
             Log.d(TAG, "HTTP URL connection building failed - There's a server error");
         }
+
         //Network clean-up - return the buffered reader and http connection resources (if) allocated to this process.
         finally {
 
@@ -133,12 +146,17 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
      *
      * @return The api call URL that will be queried for in the doInBackground().
      */
-    public URL formApiCall(String sortParam){
+
+    private URL formApiCall(String sortParam){
 
 
         final String BASE_URL = "https://api.themoviedb.org/3/movie/"+sortParam;
         final String PARAM_API_KEY = "api_key";
         URL searchUrl = null; // will be used in doInBackGround() method.
+
+        /*
+            Build the URL based on the user's sorting criteria.
+         */
 
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM_API_KEY, mApiKey)
@@ -156,7 +174,5 @@ public class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
 
         return searchUrl;
     }
-
-
 
 }
