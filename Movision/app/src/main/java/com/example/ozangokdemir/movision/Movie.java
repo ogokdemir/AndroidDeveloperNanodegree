@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
-
 
 /**
  * This is the model class.
@@ -18,12 +16,12 @@ import org.parceler.ParcelConstructor;
     I'm using the Parceler 3rd party library for passing movie objects within Bundles between activities.
  */
 
-
+@Parcel
 public class Movie {
 
     private static final String TAG = Movie.class.getSimpleName();
 
-    //Setting the serialized names for processing the raw JSON using GSON library.
+    //Using @SerializedName for the GSON library to parse the raw json data into this object.
 
     @SerializedName(JsonUtils.JSON_TITLE_KEY)
     String  mTitle;
@@ -36,6 +34,14 @@ public class Movie {
     @SerializedName(JsonUtils.JSON_RELEASE_DATE_KEY)
     String  mReleaseDate;
 
+
+    /*
+        Default constructor for the Parceler annotation library. It's a requirement of the 3rd party library.
+    */
+
+    public Movie(){
+
+    }
 
 
     public Movie(String mTitle,
@@ -60,7 +66,7 @@ public class Movie {
 
      /*
         This method is tricky. The API call returns only the relative path. It should be completed into
-        an absolute path before being returned!!
+        an absolute path before being returned.
      */
 
     public Uri getmPosterUri() {

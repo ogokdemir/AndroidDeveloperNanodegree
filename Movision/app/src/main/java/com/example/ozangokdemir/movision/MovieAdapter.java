@@ -57,7 +57,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .placeholder(R.drawable.loading)
                 .into(holder.mMoviePoster);
 
-
     }
 
     @Override

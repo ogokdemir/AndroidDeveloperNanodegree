@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -133,6 +134,12 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public void onMovieItemClick(int movieItemIdx) {
 
-        Toast.makeText(this, String.valueOf(movieItemIdx), Toast.LENGTH_SHORT).show();
-    }
+        Parcelable wrappedMovie = Parcels.wrap(currentMovieList[movieItemIdx]);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
+        Intent toDetailActivity = new Intent(this, DetailActivity.class);
+        toDetailActivity.putExtras(bundle);
+        startActivity(toDetailActivity);
+
+        }
 }
