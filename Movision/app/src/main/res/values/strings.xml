@@ -2,9 +2,9 @@
     <string name="app_name">Movision</string>
 
     <!--Delete the api key before pushing code on Github!! -->
-    <string name="api_key">YOUR KEY GOES HERE</string>
+    <string name="api_key">YOUR API KEY GOES HERE</string>
 
-    <string name="no_network_connection_error">There is no internet connection</string>
+
 
     <!--Constant strings for specifying the query criteria in the api call.-->
     <string name="sort_by_popular">popular</string>
@@ -32,9 +32,11 @@
 
 
     <!--Constant strings for the DetailActivity UI layout-->
-
     <string name="detail_activity_avg_rating">Average Rating</string>
     <string name="detail_activity_release_date">Release Date</string>
+
+
+    <string name="no_network_connection_error">There is no internet connection</string>
 
 
 </resources>
