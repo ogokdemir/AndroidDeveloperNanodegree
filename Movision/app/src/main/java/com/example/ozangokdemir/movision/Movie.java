@@ -1,20 +1,23 @@
 package com.example.ozangokdemir.movision;
 
 
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
-import java.net.URI;
 
 /**
  * This is the model class.
  * @author Ozan Gokdemir
  */
+
+
+/*
+    I'm using the Parceler 3rd party library for passing movie objects within Bundles between activities.
+ */
+
 
 public class Movie {
 
@@ -23,28 +26,28 @@ public class Movie {
     //Setting the serialized names for processing the raw JSON using GSON library.
 
     @SerializedName(JsonUtils.JSON_TITLE_KEY)
-    private String  mTitle;
+    String  mTitle;
     @SerializedName(JsonUtils.JSON_POSTER_URI_KEY)
-    private String  mPosterUri;
+    String  mPosterUri;
     @SerializedName(JsonUtils.JSON_OVERVIEW_KEY)
-    private String  mOverview;
+    String  mOverview;
     @SerializedName(JsonUtils.JSON_AVG_RATING_KEY)
-    private double  mAverageRating;
+    double  mAverageRating;
     @SerializedName(JsonUtils.JSON_RELEASE_DATE_KEY)
-    private String  mReleaseDate;
+    String  mReleaseDate;
 
 
 
-    public Movie(String title,
-                 String posterUri, String overview,
-                 double averageRating, String releaseDate) {
+    public Movie(String mTitle,
+                 String mPosterUri, String mOverview,
+                 double mAverageRating, String mReleaseDate) {
 
 
-        this.mTitle = title;
-        this.mPosterUri = posterUri;
-        this.mOverview = overview;
-        this.mAverageRating = averageRating;
-        this.mReleaseDate = releaseDate;
+        this.mTitle = mTitle;
+        this.mPosterUri = mPosterUri;
+        this.mOverview = mOverview;
+        this.mAverageRating = mAverageRating;
+        this.mReleaseDate = mReleaseDate;
     }
 
 

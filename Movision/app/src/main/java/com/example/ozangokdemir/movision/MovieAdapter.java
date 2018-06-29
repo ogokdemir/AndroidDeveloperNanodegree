@@ -1,29 +1,31 @@
 package com.example.ozangokdemir.movision;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.squareup.picasso.Picasso;
+
+
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private Movie[] mDataSource;
+    private MovieItemClickListener mMovieItemClickListener;
 
     /*
         Constructor takes in the initial data source of the adapter.
         This data source will be dynamically updatable through a public setter.
      */
 
-    public MovieAdapter(Movie[] dataSource) {
+    public MovieAdapter(Movie[] dataSource, MovieItemClickListener listener) {
 
         mDataSource = dataSource;
+        mMovieItemClickListener = listener;
     }
 
     @NonNull
@@ -71,7 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
 
 
-    class MovieViewHolder extends RecyclerView.ViewHolder{
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView mMoviePoster;
 
@@ -79,6 +81,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             super(itemView);
 
             mMoviePoster = (ImageView) itemView.findViewById(R.id.iw_movie_item);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int clickedItemPosition = getAdapterPosition();
+            mMovieItemClickListener.onMovieItemClick(clickedItemPosition);
         }
     }
 

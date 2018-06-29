@@ -1,5 +1,8 @@
 package com.example.ozangokdemir.movision;
 
+import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.parceler.Parcels;
+
 import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private String mChoosenSortParameter;
@@ -40,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            adapter = new MovieAdapter(asyncTask.execute(mChoosenSortParameter).get());
+            currentMovieList = asyncTask.execute(mChoosenSortParameter).get();
+            adapter = new MovieAdapter(currentMovieList,this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(gridLayoutManager);
             recyclerView.setHasFixedSize(true);
@@ -120,5 +128,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+    }
+
+    @Override
+    public void onMovieItemClick(int movieItemIdx) {
+
+        Toast.makeText(this, String.valueOf(movieItemIdx), Toast.LENGTH_SHORT).show();
     }
 }

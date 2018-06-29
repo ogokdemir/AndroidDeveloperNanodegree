@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Movision</string>
+
+    <!--Delete the api key before pushing code on Github!! -->
     <string name="api_key">YOUR API KEY GOES HERE</string>
 
     <!--Constant strings for specifying the query criteria in the api call.-->
