@@ -24,11 +24,21 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
 
 
+
+    //Picasso 3rd party library dependency, used for: fetching images and binding them to views.
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //Butterknife 3rd party library dependency, used for: View and Resource binding.
     implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.android.support:cardview-v7:27.1.1'
+
+    //GSON 3rd party dependency, used for: JSON processing, used for: de(serialization) of Movie model object.
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    //Parceler 3rd party library dependency, used for: Making the Movie model class parcelable.
     implementation 'org.parceler:parceler-api:1.1.10'
     annotationProcessor 'org.parceler:parceler:1.1.10'
 
@@ -36,7 +46,6 @@ dependencies {
 
 
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

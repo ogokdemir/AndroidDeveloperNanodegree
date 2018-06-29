@@ -4,4 +4,8 @@
     <dimen name="dimen_margin_bottom">16dp</dimen>
     <dimen name="dimen_card_elevation">1dp</dimen>
     <dimen name="dimen_cardview_corner_radius">5dp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="title_size">30sp</dimen>
+    <dimen name="plot_text_size">18sp</dimen>
+    <dimen name="general_margin">20dp</dimen>
 </resources>

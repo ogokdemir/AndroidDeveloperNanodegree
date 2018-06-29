@@ -29,4 +29,10 @@
     <string name="menu_title_now_playing">Now Playing</string>
 
 
+    <!--Constant strings for the DetailActivity UI layout-->
+
+    <string name="detail_activity_avg_rating">Average Rating</string>
+    <string name="detail_activity_release_date">Release Date</string>
+
+
 </resources>
