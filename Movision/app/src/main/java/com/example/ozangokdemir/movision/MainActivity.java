@@ -1,6 +1,7 @@
 package com.example.ozangokdemir.movision;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +26,7 @@ import org.parceler.Parcels;
 
 import java.util.concurrent.ExecutionException;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     }
 
 
-    private void refreshTheRecyclerView(){
+    private void refreshRecyclerView(){
 
     }
 
@@ -217,10 +220,39 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      */
 
     private void notifyUserOfNoInternetConnection(){
-        Toast.makeText(getApplicationContext(), getString(R.string.no_network_connection_error), Toast.LENGTH_LONG)
-                .show();
 
-        setContentView(R.layout.error_layout);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.alert_dialog_title));
+
+        builder
+                .setMessage(getString(R.string.alert_dialog_message))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.alert_dialog_positive_button),new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog,int id) {
+                        /*
+                            User reconnected and wants to try again.
+                         */
+                        setup();
+                    }
+                })
+                .setNegativeButton(getString(R.string.alert_dialog_negative_button),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+                        /*
+                            User choose to exit the app.
+                         */
+                        finish();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // show it
+        alertDialog.show();
     }
 
 }
+

@@ -38,5 +38,10 @@
 
     <string name="no_network_connection_error">There is no internet connection</string>
 
+    <string name="alert_dialog_title">No Internet Connection</string>
+    <string name="alert_dialog_message">Please check your connection and try again</string>
+    <string name="alert_dialog_positive_button">Try again</string>
+    <string name="alert_dialog_negative_button">Exit</string>
+
 
 </resources>
