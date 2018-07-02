@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     /**
      * Checks the internet connection-
-        if connected, instantiates a new asynctask and executes;
-        if not connected, notifies the user and prompts for action.
+     if connected, instantiates a new asynctask and executes;
+     if not connected, notifies the user and prompts for action.
      */
     private void fetchMovies(){
 
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.alert_dialog_title));
+        builder.setCancelable(true);
 
         builder
                 .setMessage(getString(R.string.alert_dialog_message))
@@ -190,4 +191,3 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
     }
 }
-
