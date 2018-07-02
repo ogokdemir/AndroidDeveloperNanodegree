@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Movision</string>
 
-    <!--Clients of my code should insert their own api key here. -->
-    <string name="api_key">YOUR API KEY GOES HERE!</string>
+    <!--Clients of my code can insert their own api key here -->
+    <string name="api_key">c4549f30f17241f3794cb1114c2f80ed</string>
 
 
 
@@ -33,8 +33,9 @@
     <string name="alert_dialog_title">No Internet Connection</string>
     <string name="alert_dialog_message">Please check your connection and try again</string>
     <string name="alert_dialog_positive_button">Try again</string>
-    <string name="alert_dialog_negative_button">Exit</string>
+    <string name="alert_dialog_negative_button">Exit App</string>
     <string name="image_content_decription">Picture for</string>
+
 
 
 </resources>

@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3"
-    android:padding="@dimen/dimen_padding"
-    >
+    android:weightSum="5"
+    android:padding="@dimen/dimen_padding">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:id="@+id/iw_detail_activity_poster"
-        android:layout_marginBottom="@dimen/general_margin"
-        tools:ignore="ContentDescription" />
+        android:layout_marginRight="@dimen/dimen_padding"
+        android:adjustViewBounds="true"
+        android:contentDescription="TODO"
+
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="vertical"
 
         >
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tw_detail_activity_rating"
             android:textSize="@dimen/text_size_large"
@@ -36,7 +39,7 @@
             />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tw_detail_activity_release_date"
             android:textSize="@dimen/text_size_large"
@@ -46,30 +49,41 @@
 
             />
 
-        <TextView
-            android:layout_width="match_parent"
+
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tw_detail_activity_title"
-            android:fontFamily="monospace"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold"
-            android:layout_marginBottom="@dimen/general_margin"
-            />
+            >
 
-
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tw_detail_activity_overview"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tw_detail_activity_title"
                     android:fontFamily="monospace"
-                    android:textSize="@dimen/plot_text_size" />
+                    android:textSize="@dimen/title_size"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/general_margin"  />
 
-            </ScrollView>
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tw_detail_activity_overview"
+                        android:fontFamily="monospace"
+                        android:textSize="@dimen/plot_text_size" />
+
+                </LinearLayout>
+
+        </ScrollView>
+
+
+        </LinearLayout>
+
 
 </LinearLayout>

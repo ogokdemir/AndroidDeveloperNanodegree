@@ -10,7 +10,6 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-@SuppressWarnings("WeakerAccess")
 public class DetailActivity extends AppCompatActivity {
 
     @BindView (R.id.iw_detail_activity_poster)ImageView mMoviePosterIw;

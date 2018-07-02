@@ -24,15 +24,15 @@ public class Movie {
     //Using @SerializedName for the GSON library to parse the raw json data into this object.
 
     @SerializedName(JsonUtils.JSON_TITLE_KEY)
-    private String  mTitle;
+    String  mTitle;
     @SerializedName(JsonUtils.JSON_POSTER_URI_KEY)
-    private String  mPosterUri;
+    String  mPosterUri;
     @SerializedName(JsonUtils.JSON_OVERVIEW_KEY)
-    private String  mOverview;
+    String  mOverview;
     @SerializedName(JsonUtils.JSON_AVG_RATING_KEY)
-    private double  mAverageRating;
+    double  mAverageRating;
     @SerializedName(JsonUtils.JSON_RELEASE_DATE_KEY)
-    private String  mReleaseDate;
+    String  mReleaseDate;
 
 
     /*

@@ -36,10 +36,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         Context context = parent.getContext();
         int rowLayoutId = R.layout.movie_item_layout;
-        boolean attachToParentImmediately = false;
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(rowLayoutId, parent, attachToParentImmediately);
+        View view = inflater.inflate(rowLayoutId, parent, false);
 
 
 
@@ -67,18 +66,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mDataSource.length;
     }
 
-    /**
-     * Allows for passing new movie data dynamically to the existing adapter object.
-
-     * @param movies data source update, new movies.
-     */
-
-    public void updateAdapterDataSource(Movie[] movies){
-
-        mDataSource = movies;
-    }
-
-
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -99,5 +86,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
+
+    public void updateAdapterDataSource(Movie[] movies){
+        mDataSource = movies;
+    }
 
 }

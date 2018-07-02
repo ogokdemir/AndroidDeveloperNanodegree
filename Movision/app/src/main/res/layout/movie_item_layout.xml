@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:id="@+id/iw_movie_item"
         android:adjustViewBounds="true"
-        />
+        android:contentDescription="TODO" />
 
 
 

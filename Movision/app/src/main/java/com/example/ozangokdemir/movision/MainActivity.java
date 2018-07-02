@@ -1,10 +1,7 @@
 package com.example.ozangokdemir.movision;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -16,20 +13,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import org.parceler.Parcels;
-import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener{
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener, OnTaskCompleted{
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     private String mChoosenSortParameter;
     @BindView(R.id.rw_grid_container) RecyclerView recyclerView;
-    private FetchMovieDataTask asyncTask;
     private Movie[] currentMovieList;
     private MovieAdapter adapter;
-    private GridLayoutManager layoutManager;
 
 
     @Override
@@ -40,11 +33,13 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         //Initial setup.
         mChoosenSortParameter = getString(R.string.sort_by_default);
-        layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setAdapter(adapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
+        //initial data source is null, new data will be bound to the adapter after first fetchMovies() executes.
+        adapter = new MovieAdapter(null, this);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-
 
         fetchMovies();
 
@@ -52,93 +47,19 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
 
     /**
-     * Instantiates an asynctask object, executes, passes the fetched data to the adapter.
+     * Checks the internet connection-
+        if connected, instantiates a new asynctask and executes;
+        if not connected, notifies the user and prompts for action.
      */
+    private void fetchMovies(){
 
-    public void fetchMovies(){
+        if(NetworkUtils.isOnline(this)) {
+            FetchMovieDataTask asyncTask = new FetchMovieDataTask(getString(R.string.api_key), this);
+            asyncTask.execute(mChoosenSortParameter);
 
-        /*
-            Note to reviewer:
-
-            I know that instantiating a new asynctask on each call is not the best practice here and that I need to use
-            an AsyncTaskLoader but I don't know how to use those yet.
-         */
-
-        asyncTask = new FetchMovieDataTask(getResources().getString(R.string.api_key));
-        currentMovieList = executeAsynctaskWithNetworkCheck(asyncTask);
-
-        if(currentMovieList != null) // if there was connection and some movies could be fetched:
-            adapter = new MovieAdapter(currentMovieList, this);
-        else
-            return;
-
-        recyclerView.setAdapter(adapter);
-
-    }
-
-
-
-
-    /**
-     * This method updates the current sorting criteria by instantiating a new asynctasks object and making a new api call.
-     *
-     * Called when the user picks a different sorting from the option menu.
-     *
-     * @param choosenSortParameter The sorting criteria that the user picks from the drop down action bar menu.
-     */
-    private void updateCurrentMovieList(String choosenSortParameter){
-
-        if(isOnline()) {
-
-            fetchMovies();
-
-        }else{
+        }else
             notifyUserOfNoInternetConnection();
-            return;
-        }
-
-        //Updating the adapter's data source with the freshly updated Movie[] array.
-        adapter.updateAdapterDataSource(currentMovieList);
-
-        //setting the adapter of the recyclerview changes what user sees on the screen.
-        recyclerView.setAdapter(adapter);
-
-
-
     }
-
-    /**
-     *
-     * @param task The Asynctask object on which the execute() is being called.
-     * @return Movie array that FetchMovieDataTask returns.
-     */
-
-    private Movie[] executeAsynctaskWithNetworkCheck(FetchMovieDataTask task){
-
-        Movie[] movieList = null;
-
-        if(isOnline()) {
-            try {
-
-                movieList = task.execute(mChoosenSortParameter).get();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-
-
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-
-            }
-
-            // Device doesn't have network connection.
-        }
-        else
-            notifyUserOfNoInternetConnection();
-
-        return movieList;
-    }
-
 
 
     @Override
@@ -151,9 +72,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
 
     /**
-     *
      * @param item Options menu item that was clicked. These items are sorting criteria (popular, top rated etc.)
-     *
      */
 
     @Override
@@ -186,14 +105,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         }
 
 
-        updateCurrentMovieList(mChoosenSortParameter);
+        fetchMovies();
+
         return super.onOptionsItemSelected(item);
     }
 
 
 
     /**
-     * Implementation of the listener for the movie poster clicks.
+     * Handling the MovieAdapter's notification on a movie item click.
      *
      * @param movieItemIdx index of the movie poster that was tapped.
      */
@@ -239,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                     public void onClick(DialogInterface dialog,int id) {
 
                         /*
-                            User choose to exit the app.
+                            User chose to exit the app.
                          */
                         finish();
                     }
@@ -254,16 +174,20 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
 
     /**
-     * This method checks the network connection of the device. Source: stackoverflow.com
+     * Handling FetchMovieDataTask's notification that the task was completed.
      *
-     * @return whether the device has connection or not.
+     * @param movies The array of movies that was returned by onPostExecute()
      */
-    private boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
+    @Override
+    public void onTaskCompleted(Movie[] movies) {
 
+        if(movies!= null)
+            currentMovieList = movies;
+
+
+        adapter.updateAdapterDataSource(movies);
+        recyclerView.setAdapter(adapter);
+
+    }
 }
 
