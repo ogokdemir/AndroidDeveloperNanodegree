@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is the model class.
  * @author Ozan Gokdemir
@@ -23,43 +26,72 @@ public class Movie {
 
     //Using @SerializedName for the GSON library to parse the raw json data into this object.
 
-    @SerializedName(JsonUtils.JSON_TITLE_KEY)
+    @SerializedName("id")
+    String mId;
+    @SerializedName("title")
     String  mTitle;
-    @SerializedName(JsonUtils.JSON_POSTER_URI_KEY)
+    @SerializedName("poster_path")
     String  mPosterUri;
-    @SerializedName(JsonUtils.JSON_OVERVIEW_KEY)
+    @SerializedName("overview")
     String  mOverview;
-    @SerializedName(JsonUtils.JSON_AVG_RATING_KEY)
+    @SerializedName("vote_average")
     double  mAverageRating;
-    @SerializedName(JsonUtils.JSON_RELEASE_DATE_KEY)
+    @SerializedName("release_date")
     String  mReleaseDate;
+    @SerializedName("adult")
+    boolean mAdult;
+    @SerializedName("genre_ids")
+    List<Integer> mGenreIds = new ArrayList<Integer>();
+    @SerializedName("original_title")
+    String mOriginalTitle;
+    @SerializedName("original_language")
+    String mOriginalLanguage;
+    @SerializedName("backdrop_path")
+    String mBackdropPath;
+    @SerializedName("popularity")
+    Double mPopularity;
+    @SerializedName("vote_count")
+    Integer mVoteCount;
+    @SerializedName("video")
+    Boolean mVideo;
+
+
+
+
 
 
     /*
         Default constructor for the Parceler annotation library. It's a requirement of the 3rd party library.
     */
 
-    public Movie(){
+    public Movie() { }
 
+    public Movie(String id, String title, String posterUri,
+                 String overview, double averageRating, String releaseDate,
+                 boolean adult, List<Integer> genreIds, String originalTitle,
+                 String originalLanguage, String backdropPath, Double popularity,
+                 Integer voteCount, Boolean video) {
+
+        mId = id;
+        mTitle = title;
+        mPosterUri = posterUri;
+        mOverview = overview;
+        mAverageRating = averageRating;
+        mReleaseDate = releaseDate;
+        mAdult = adult;
+        mGenreIds = genreIds;
+        mOriginalTitle = originalTitle;
+        mOriginalLanguage = originalLanguage;
+        mBackdropPath = backdropPath;
+        mPopularity = popularity;
+        mVoteCount = voteCount;
+        mVideo = video;
     }
 
 
-    public Movie(String mTitle,
-                 String mPosterUri, String mOverview,
-                 double mAverageRating, String mReleaseDate) {
+// Getters for UI inflation from the model Movie objects. Setting will be handled by the GSON library so no setters needed.
 
-
-        this.mTitle = mTitle;
-        this.mPosterUri = mPosterUri;
-        this.mOverview = mOverview;
-        this.mAverageRating = mAverageRating;
-        this.mReleaseDate = mReleaseDate;
-    }
-
-
-    // Getters for UI inflation from the model Movie objects. Setting will be handled by the GSON library so no setters needed.
-
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
@@ -69,7 +101,7 @@ public class Movie {
         an absolute path before being returned.
      */
 
-    public Uri getmPosterUri() {
+    public Uri getPosterUri() {
 
         final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -81,19 +113,52 @@ public class Movie {
     }
 
 
-    public String getmOverview() {
+    public String getOverview() {
         return mOverview;
     }
 
 
-    public double getmAverageRating() {
+    public double getAverageRating() {
         return mAverageRating;
     }
 
 
-    public String getmReleaseDate() {
+    public String getReleaseDate() {
         return mReleaseDate;
     }
 
+    public String getId() {return mId;}
 
+
+    public boolean ismAdult() {
+        return mAdult;
+    }
+
+    public List<Integer> getmGenreIds() {
+        return mGenreIds;
+    }
+
+    public String getmOriginalTitle() {
+        return mOriginalTitle;
+    }
+
+    public String getmOriginalLanguage() {
+        return mOriginalLanguage;
+    }
+
+    public String getmBackdropPath() {
+        return mBackdropPath;
+    }
+
+    public Double getmPopularity() {
+        return mPopularity;
+    }
+
+    public Integer getmVoteCount() {
+        return mVoteCount;
+    }
+
+    public Boolean getmVideo() {
+        return mVideo;
+    }
 }

@@ -17,6 +17,7 @@ class JsonUtils {
 
     // These are keys in the raw TMDB API JSON response. These will be used for serialization and deserialization.
 
+    static final String JSON_ID_KEY = "id";
     static final String JSON_TITLE_KEY = "title";
     static final String JSON_POSTER_URI_KEY = "poster_path";
     static final String JSON_OVERVIEW_KEY = "overview";
@@ -35,6 +36,8 @@ class JsonUtils {
 
         Gson gsonParser = new Gson();
         Movie[] movies = null;
+
+        Log.i(TAG, rawJsonString);
 
         try {
             JSONObject jsonObject = new JSONObject(rawJsonString);

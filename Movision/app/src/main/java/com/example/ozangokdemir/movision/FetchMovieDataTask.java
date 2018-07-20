@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+
 
 /**
  * String parameter sets the sort type - popular, top_rated, upcoming or now_playing.
@@ -151,11 +153,13 @@ class FetchMovieDataTask extends AsyncTask<String, Void, Movie[]>{
      *
       * @param movies Result of the task, an array of Movie objects.
      */
+
+    /*
     @Override
-    protected void onPostExecute(Movie[] movies) {
+    protected void onPostExecute(List<Movie> movies) {
         super.onPostExecute(movies);
 
         mOnTaskCompleted.onTaskCompleted(movies);
     }
-
+*/
 }

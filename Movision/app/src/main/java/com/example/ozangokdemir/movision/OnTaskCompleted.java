@@ -1,7 +1,9 @@
 package com.example.ozangokdemir.movision;
 
+import java.util.List;
+
 interface OnTaskCompleted {
 
-    void onTaskCompleted(Movie[] movies);
+    void onTaskCompleted(List<Movie> movies);
 
 }

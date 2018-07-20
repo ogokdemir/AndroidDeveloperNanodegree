@@ -13,17 +13,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import org.parceler.Parcels;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener, OnTaskCompleted{
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener, Callback<InitialMovieResponse>{
 
     private String mChoosenSortParameter;
     @BindView(R.id.rw_grid_container) RecyclerView recyclerView;
-    private Movie[] currentMovieList;
+    private List<Movie> currentMovieList; // Cache for the current data source. Consider for ViewModel
     private MovieAdapter adapter;
-
+    Retrofit retrofit;
+    RetrofitApiInterface apiInterface;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,24 +48,42 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        fetchMovies();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitApiInterface.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiInterface = retrofit.create(RetrofitApiInterface.class);
+
+        fetchMovies(mChoosenSortParameter);
 
     }
 
 
+
     /**
+     * !!!!! NOTE !!!!
+     *
+     * 1)Retrofit calls are currently maid on the UI thread, look into rxjava for pushing fetch to background thread.
+     * 2)When 1 is accomplished, delete the NetworkUtils class.
+     *
      * Checks the internet connection-
      if connected, instantiates a new asynctask and executes;
      if not connected, notifies the user and prompts for action.
      */
-    private void fetchMovies(){
+    private void fetchMovies(String choosenParameter){
 
         if(NetworkUtils.isOnline(this)) {
-            FetchMovieDataTask asyncTask = new FetchMovieDataTask(getString(R.string.api_key), this);
-            asyncTask.execute(mChoosenSortParameter);
+            Call<InitialMovieResponse> call = apiInterface.getInitialResponse(mChoosenSortParameter,
+                    getString(R.string.api_key));
+
+            call.enqueue(this);
 
         }else
             notifyUserOfNoInternetConnection();
+
+
     }
 
 
@@ -78,41 +103,34 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int selectedItemId = item.getItemId();
+        setTitle(item.getTitle());
 
-        switch (selectedItemId){
-
+        switch (item.getItemId()){
             case R.id.action_sort_by_popularity:
-
                 mChoosenSortParameter = getString(R.string.sort_by_popular);
-                setTitle(getString(R.string.menu_title_popular));
                 break;
 
             case R.id.action_sort_by_top_rated:
                 mChoosenSortParameter = getString(R.string.sort_by_top_rated);
-                setTitle(getString(R.string.menu_title_top_rated));
                 break;
 
             case R.id.action_sort_by_now_playing:
                 mChoosenSortParameter = getString(R.string.sort_by_now_playing);
-                setTitle(getString(R.string.menu_title_now_playing));
                 break;
 
             case R.id.action_sort_by_upcoming:
                 mChoosenSortParameter = getString(R.string.sort_by_upcoming);
-                setTitle(getString(R.string.menu_title_upcoming));
                 break;
-        }
+     }
 
 
-        fetchMovies();
-
+        fetchMovies(mChoosenSortParameter);
         return super.onOptionsItemSelected(item);
-    }
+     }
 
 
 
-    /**
+     /**
      * Handling the MovieAdapter's notification on a movie item click.
      *
      * @param movieItemIdx index of the movie poster that was tapped.
@@ -120,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public void onMovieItemClick(int movieItemIdx) {
 
-        Parcelable wrappedMovie = Parcels.wrap(currentMovieList[movieItemIdx]);
+        Parcelable wrappedMovie = Parcels.wrap(currentMovieList.get(movieItemIdx));
         Bundle bundle = new Bundle();
         bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
         Intent toDetailActivity = new Intent(this, DetailActivity.class);
@@ -135,6 +153,13 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
      *
      * Displays an alert dialog and prompts the user for an action: reconnect and try again or exit the app.
      *
+     *
+     * !!! NOTE !!!
+     * This is extremely ugly here in the MainActivity, how do I move it outside? Maybe a PopUp activity which will
+     * be called from the NetworkUtils?
+     *
+     *
+     *
      */
 
     private void notifyUserOfNoInternetConnection(){
@@ -146,14 +171,14 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         builder
                 .setMessage(getString(R.string.alert_dialog_message))
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(getString(R.string.alert_dialog_positive_button),new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog,int id) {
                         /*
                             User reconnected and wants to try again.
                          */
-                        fetchMovies();
+                        fetchMovies(mChoosenSortParameter);
                     }
                 })
                 .setNegativeButton(getString(R.string.alert_dialog_negative_button),new DialogInterface.OnClickListener() {
@@ -175,19 +200,28 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
 
     /**
-     * Handling FetchMovieDataTask's notification that the task was completed.
-     *
-     * @param movies The array of movies that was returned by onPostExecute()
+        !!! NOTE !!!
+
+        When I figure out the ViewModel, I'll carry this code into ViewModel class.
+
+        LiveData<List<Movie>> will be cached in this ViewModel so the same data won't be fetched each time.
+
      */
+
     @Override
-    public void onTaskCompleted(Movie[] movies) {
+    public void onResponse(Call<InitialMovieResponse> call, Response<InitialMovieResponse> response) {
+
+        List<Movie> movies = response.body().getResults();
 
         if(movies!= null)
             currentMovieList = movies;
 
-
         adapter.updateAdapterDataSource(movies);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onFailure(Call<InitialMovieResponse> call, Throwable t) {
 
     }
 }

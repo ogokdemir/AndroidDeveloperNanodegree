@@ -25,25 +25,27 @@ dependencies {
 
 
 
-    //Picasso 3rd party library dependency, used for: fetching images and binding them to views.
+    //Picasso 3rd-party library dependency, used for: fetching images and binding them to views.
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    //Butterknife 3rd party library dependency, used for: View and Resource binding.
+    //Butterknife 3rd-party library dependency, used for: View and Resource binding.
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
 
-    //GSON 3rd party dependency, used for: JSON processing, used for: de(serialization) of Movie model object.
+    //GSON 3rd-party dependency, used for: JSON processing, used for: de(serialization) of Movie model object.
     implementation 'com.google.code.gson:gson:2.8.2'
 
-    //Parceler 3rd party library dependency, used for: Making the Movie model class parcelable.
+    //Parceler 3rd-party library dependency, used for: Making the Movie model class parcelable.
     implementation 'org.parceler:parceler-api:1.1.10'
     annotationProcessor 'org.parceler:parceler:1.1.10'
 
-
+    //Retrofit 3rd-party library for HTTP request to the TMDB RESTful API.
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
 
 

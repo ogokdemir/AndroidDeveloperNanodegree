@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
-
+import java.util.List;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private Movie[] mDataSource;
+    private List<Movie> mDataSource;
     private final MovieItemClickListener mMovieItemClickListener;
 
     /**
@@ -24,7 +24,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * @param listener   A reference to the MainActivity's implementation of the MovieItemClickListener.
      */
 
-    public MovieAdapter(Movie[] dataSource, MovieItemClickListener listener) {
+    public MovieAdapter(List<Movie> dataSource, MovieItemClickListener listener) {
 
         mDataSource = dataSource;
         mMovieItemClickListener = listener;
@@ -53,17 +53,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         //This is where the Picasso magic happens! Binding thumbnail poster to movie items in the grid.
 
         Picasso.with(holder.mMoviePoster.getContext())
-                .load(mDataSource[position].getmPosterUri())
+                .load(mDataSource.get(position).getPosterUri())
                 .error(R.drawable.error)
                 .placeholder(R.drawable.loading)
                 .into(holder.mMoviePoster);
 
-        holder.mMoviePoster.setContentDescription("Picture for " +mDataSource[position].getmTitle());
+        holder.mMoviePoster.setContentDescription("Picture for " + mDataSource.get(position).getTitle());
+
     }
 
     @Override
     public int getItemCount() {
-        return mDataSource.length;
+        return mDataSource.size();
     }
 
 
@@ -87,7 +88,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
 
-    public void updateAdapterDataSource(Movie[] movies){
+    public void updateAdapterDataSource(List<Movie> movies){
         mDataSource = movies;
     }
 

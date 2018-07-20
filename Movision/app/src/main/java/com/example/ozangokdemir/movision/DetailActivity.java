@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 import org.parceler.Parcels;
 import butterknife.BindView;
@@ -43,19 +45,19 @@ public class DetailActivity extends AppCompatActivity {
 
         // Display the movie poster.
         Picasso.with(this)
-                .load(movie.getmPosterUri())
+                .load(movie.getPosterUri())
                 .error(R.drawable.error)
                 .placeholder(R.drawable.loading)
                 .into(mMoviePosterIw);
 
         // Bind data to other text views in the layout.
 
-        mAvgRatingTw.append("\n"+movie.getmAverageRating()+"/10");
-        mReleaseDataTw.append("\n"+movie.getmReleaseDate());
-        mTitleTw.setText(movie.getmTitle());
-        mOverViewTw.setText(movie.getmOverview());
+        mAvgRatingTw.append("\n"+movie.getAverageRating()+"/10");
+        mReleaseDataTw.append("\n"+movie.getReleaseDate());
+        mTitleTw.setText(movie.getTitle());
+        mOverViewTw.setText(movie.getOverview());
+        mMoviePosterIw.setContentDescription(getString(R.string.image_content_decription)+movie.getTitle());
 
-        mMoviePosterIw.setContentDescription(getString(R.string.image_content_decription)+movie.getmTitle());
 
     }
 
