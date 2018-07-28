@@ -1,4 +1,4 @@
-package com.example.ozangokdemir.movision;
+package com.example.ozangokdemir.movision.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.ozangokdemir.movision.Movie;
+import com.example.ozangokdemir.movision.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -58,7 +62,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .placeholder(R.drawable.loading)
                 .into(holder.mMoviePoster);
 
+        holder.mMovieRating.setText(String.valueOf(mDataSource.get(position).getAverageRating()));
+        holder.mMovieTitle.setText(mDataSource.get(position).getTitle());
+
         holder.mMoviePoster.setContentDescription("Picture for " + mDataSource.get(position).getTitle());
+
 
     }
 
@@ -71,11 +79,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final ImageView mMoviePoster;
+        final TextView mMovieTitle;
+        final TextView mMovieRating;
 
         MovieViewHolder(View itemView) {
             super(itemView);
 
             mMoviePoster = itemView.findViewById(R.id.iw_movie_item);
+            mMovieTitle = itemView.findViewById(R.id.tv_movie_title);
+            mMovieRating = itemView.findViewById(R.id.tv_movie_rating);
+
             itemView.setOnClickListener(this);
         }
 

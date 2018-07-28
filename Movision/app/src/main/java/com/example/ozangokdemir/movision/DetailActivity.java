@@ -58,7 +58,6 @@ public class DetailActivity extends AppCompatActivity {
         mOverViewTw.setText(movie.getOverview());
         mMoviePosterIw.setContentDescription(getString(R.string.image_content_decription)+movie.getTitle());
 
-
     }
 
 }

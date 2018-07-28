@@ -1,23 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    cardview:cardCornerRadius="@dimen/dimen_cardview_corner_radius"
-    cardview:cardElevation="@dimen/dimen_card_elevation"
-    cardview:cardUseCompatPadding="true"
-    >
-
-
-    <ImageView
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/iw_movie_item"
-        android:adjustViewBounds="true"
-        android:contentDescription="TODO" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        cardview:cardCornerRadius="@dimen/dimen_cardview_corner_radius"
+        cardview:cardElevation="@dimen/dimen_card_elevation"
+        cardview:cardUseCompatPadding="true"
+        cardview:layout_constraintBottom_toBottomOf="parent"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iw_movie_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="TODO"
+            tools:src="@mipmap/icon" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/tv_movie_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:textStyle="bold"
+                tools:text="Title"
+                android:maxLines="2"
+                android:minLines="2"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                />
+
+            <TextView
+                android:id="@+id/tv_movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@mipmap/icon_rating"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="5.8" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

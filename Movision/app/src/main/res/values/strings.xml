@@ -2,7 +2,7 @@
     <string name="app_name">Movision</string>
 
     <!--Clients of my code can insert their own api key here -->
-    <string name="api_key">INSERT YOUR KEY HERE</string>
+    <string name="api_key">INSERT YOUR API KEY HERE...</string>
 
 
 

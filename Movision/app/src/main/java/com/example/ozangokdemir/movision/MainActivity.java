@@ -1,5 +1,6 @@
 package com.example.ozangokdemir.movision;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -12,25 +13,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.example.ozangokdemir.movision.adapter.MovieAdapter;
+import com.example.ozangokdemir.movision.adapter.MovieItemClickListener;
+import com.example.ozangokdemir.movision.data.MovieViewModel;
 import org.parceler.Parcels;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity implements MovieItemClickListener, Callback<InitialMovieResponse>{
+public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private String mChoosenSortParameter;
     @BindView(R.id.rw_grid_container) RecyclerView recyclerView;
     private List<Movie> currentMovieList; // Cache for the current data source. Consider for ViewModel
-    private MovieAdapter adapter;
-    Retrofit retrofit;
-    RetrofitApiInterface apiInterface;
+    private com.example.ozangokdemir.movision.adapter.MovieAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
         //Initial setup.
-        mChoosenSortParameter = getString(R.string.sort_by_default);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
         //initial data source is null, new data will be bound to the adapter after first fetchMovies() executes.
@@ -49,47 +47,41 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         recyclerView.setHasFixedSize(true);
 
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitApiInterface.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if(savedInstanceState != null && savedInstanceState.getString(TAG)!= null)
+            mChoosenSortParameter = savedInstanceState.getString(TAG);
+        else
+        mChoosenSortParameter = getString(R.string.sort_by_default);
 
-        apiInterface = retrofit.create(RetrofitApiInterface.class);
-
-        fetchMovies(mChoosenSortParameter);
-
+        setupViewModel(mChoosenSortParameter);
     }
 
 
 
-    /**
-     * !!!!! NOTE !!!!
-     *
-     * 1)Retrofit calls are currently maid on the UI thread, look into rxjava for pushing fetch to background thread.
-     * 2)When 1 is accomplished, delete the NetworkUtils class.
-     *
-     * Checks the internet connection-
-     if connected, instantiates a new asynctask and executes;
-     if not connected, notifies the user and prompts for action.
-     */
-    private void fetchMovies(String choosenParameter){
+    private void setupViewModel(String chosenParameter){
 
         if(NetworkUtils.isOnline(this)) {
-            Call<InitialMovieResponse> call = apiInterface.getInitialResponse(mChoosenSortParameter,
-                    getString(R.string.api_key));
+            //MovieViewModelFactory factory = new MovieViewModelFactory(chosenParameter, getString(R.string.api_key));
+            //viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+            //This code will be executed in the background thanks to the LiveData library.
 
-            call.enqueue(this);
+            MovieViewModel viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
+
+            viewModel.getMovies(chosenParameter, getString(R.string.api_key)).observe(this, movies -> {
+
+                currentMovieList = movies;
+
+                adapter.updateAdapterDataSource(currentMovieList);
+                recyclerView.setAdapter(adapter);
+            });
         }else
             notifyUserOfNoInternetConnection();
-
 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         new MenuInflater(this).inflate(R.menu.action_menu, menu);
         return true;
 
@@ -121,16 +113,15 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
             case R.id.action_sort_by_upcoming:
                 mChoosenSortParameter = getString(R.string.sort_by_upcoming);
                 break;
-     }
 
+        }
 
-        fetchMovies(mChoosenSortParameter);
+        setupViewModel(mChoosenSortParameter);
         return super.onOptionsItemSelected(item);
-     }
+    }
 
 
-
-     /**
+    /**
      * Handling the MovieAdapter's notification on a movie item click.
      *
      * @param movieItemIdx index of the movie poster that was tapped.
@@ -140,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         Parcelable wrappedMovie = Parcels.wrap(currentMovieList.get(movieItemIdx));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
+        bundle.putParcelable(com.example.ozangokdemir.movision.DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
         Intent toDetailActivity = new Intent(this, DetailActivity.class);
         toDetailActivity.putExtras(bundle);
         startActivity(toDetailActivity);
@@ -148,19 +139,10 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     }
 
 
+
     /**
      * Helper method for notifying the user that their device is not connected to the internet.
-     *
-     * Displays an alert dialog and prompts the user for an action: reconnect and try again or exit the app.
-     *
-     *
-     * !!! NOTE !!!
-     * This is extremely ugly here in the MainActivity, how do I move it outside? Maybe a PopUp activity which will
-     * be called from the NetworkUtils?
-     *
-     *
-     *
-     */
+     **/
 
     private void notifyUserOfNoInternetConnection(){
 
@@ -178,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                         /*
                             User reconnected and wants to try again.
                          */
-                        fetchMovies(mChoosenSortParameter);
+                        setupViewModel(mChoosenSortParameter);
                     }
                 })
                 .setNegativeButton(getString(R.string.alert_dialog_negative_button),new DialogInterface.OnClickListener() {
@@ -198,30 +180,9 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         alertDialog.show();
     }
 
-
-    /**
-        !!! NOTE !!!
-
-        When I figure out the ViewModel, I'll carry this code into ViewModel class.
-
-        LiveData<List<Movie>> will be cached in this ViewModel so the same data won't be fetched each time.
-
-     */
-
     @Override
-    public void onResponse(Call<InitialMovieResponse> call, Response<InitialMovieResponse> response) {
-
-        List<Movie> movies = response.body().getResults();
-
-        if(movies!= null)
-            currentMovieList = movies;
-
-        adapter.updateAdapterDataSource(movies);
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onFailure(Call<InitialMovieResponse> call, Throwable t) {
-
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TAG, mChoosenSortParameter);
     }
 }
