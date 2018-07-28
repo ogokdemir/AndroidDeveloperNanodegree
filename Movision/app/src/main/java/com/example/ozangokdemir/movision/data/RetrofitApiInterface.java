@@ -1,6 +1,6 @@
 package com.example.ozangokdemir.movision.data;
 
-import com.example.ozangokdemir.movision.InitialMovieResponse;
+import com.example.ozangokdemir.movision.models.InitialMovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

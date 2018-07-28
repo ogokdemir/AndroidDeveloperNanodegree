@@ -1,11 +1,10 @@
 package com.example.ozangokdemir.movision.data;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import com.example.ozangokdemir.movision.Movie;
+import com.example.ozangokdemir.movision.models.Movie;
 import java.util.List;
 
 public class MovieViewModel extends ViewModel {

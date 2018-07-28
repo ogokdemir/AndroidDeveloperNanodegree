@@ -1,4 +1,4 @@
-package com.example.ozangokdemir.movision;
+package com.example.ozangokdemir.movision.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -13,6 +13,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.example.ozangokdemir.movision.models.Movie;
+import com.example.ozangokdemir.movision.utils.*;
+import com.example.ozangokdemir.movision.R;
 import com.example.ozangokdemir.movision.adapter.MovieAdapter;
 import com.example.ozangokdemir.movision.adapter.MovieItemClickListener;
 import com.example.ozangokdemir.movision.data.MovieViewModel;
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         Parcelable wrappedMovie = Parcels.wrap(currentMovieList.get(movieItemIdx));
         Bundle bundle = new Bundle();
-        bundle.putParcelable(com.example.ozangokdemir.movision.DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
+        bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
         Intent toDetailActivity = new Intent(this, DetailActivity.class);
         toDetailActivity.putExtras(bundle);
         startActivity(toDetailActivity);

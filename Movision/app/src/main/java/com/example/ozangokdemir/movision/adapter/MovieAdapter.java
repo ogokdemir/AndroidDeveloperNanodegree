@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ozangokdemir.movision.Movie;
+import com.example.ozangokdemir.movision.models.Movie;
 import com.example.ozangokdemir.movision.R;
 import com.squareup.picasso.Picasso;
 

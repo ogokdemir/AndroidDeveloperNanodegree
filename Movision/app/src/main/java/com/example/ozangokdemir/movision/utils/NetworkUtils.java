@@ -1,4 +1,4 @@
-package com.example.ozangokdemir.movision;
+package com.example.ozangokdemir.movision.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,7 +8,7 @@ import android.net.Uri;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-class NetworkUtils {
+public class NetworkUtils {
 
 
     /**
@@ -16,7 +16,7 @@ class NetworkUtils {
      *
      * @return whether the device has connection or not.
      */
-     static boolean isOnline(Context context) {
+     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

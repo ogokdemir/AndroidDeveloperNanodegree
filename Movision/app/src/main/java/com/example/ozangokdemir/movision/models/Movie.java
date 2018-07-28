@@ -1,4 +1,4 @@
-package com.example.ozangokdemir.movision;
+package com.example.ozangokdemir.movision.models;
 
 
 import android.net.Uri;
