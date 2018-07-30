@@ -1,14 +1,11 @@
 package com.example.ozangokdemir.movision.data;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.example.ozangokdemir.movision.models.Movie;
+import com.example.ozangokdemir.movision.models.Review;
 import com.example.ozangokdemir.movision.models.Trailer;
-
 import java.util.List;
 
 public class MovieViewModel extends ViewModel {
@@ -16,9 +13,9 @@ public class MovieViewModel extends ViewModel {
     private static final String TAG = MovieViewModel.class.getSimpleName();
 
     //Retrieved movies,trailers and reviews wrapped in a ViewHolder so they survive lifecycle callbacks in the controller.
-
     private LiveData<List<Movie>> mMovies;
     private LiveData<List<Trailer>> mTrailers;
+    private LiveData<List<Review>> mReviews;
     private MovieRepository mRepository;
     private String previousCriteria;
 
@@ -57,5 +54,17 @@ public class MovieViewModel extends ViewModel {
         return mTrailers;
     }
 
+    public LiveData<List<Review>> getReviews(int movieId, String apiKey){
+
+        Log.d(TAG, "getReviews was called.");
+
+        mReviews = mRepository.fetchReviews(movieId, apiKey);
+
+        Log.d(TAG, String.valueOf(mReviews == null));
+
+        return mReviews;
+
+
+    }
 
  }

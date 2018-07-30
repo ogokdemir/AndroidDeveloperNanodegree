@@ -139,10 +139,18 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
             Parcelable wrappedTrailers = Parcels.wrap(trailers);
             bundle.putParcelable(DetailActivity.TRAILERS_INTENT_KEY, wrappedTrailers);
-            toDetailActivity.putExtras(bundle);
-            startActivity(toDetailActivity);
 
+
+            viewModel.getReviews(displayedMovies.get(movieItemIdx).getId(), getString(R.string.api_key)).observe(this, reviews ->{
+                Parcelable wrappedReviews = Parcels.wrap(reviews);
+                bundle.putParcelable(DetailActivity.REVIEWS_INTENT_KEY, wrappedReviews);
+
+                toDetailActivity.putExtras(bundle);
+                startActivity(toDetailActivity);
+            });
         });
+
+
     }
 
 

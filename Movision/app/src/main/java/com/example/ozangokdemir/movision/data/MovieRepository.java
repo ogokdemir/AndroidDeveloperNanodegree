@@ -6,8 +6,10 @@ import android.util.Log;
 import android.widget.TableRow;
 
 import com.example.ozangokdemir.movision.models.InitialMovieResponse;
+import com.example.ozangokdemir.movision.models.InitialReviewResponse;
 import com.example.ozangokdemir.movision.models.InitialTrailerResponse;
 import com.example.ozangokdemir.movision.models.Movie;
+import com.example.ozangokdemir.movision.models.Review;
 import com.example.ozangokdemir.movision.models.Trailer;
 
 import java.util.List;
@@ -29,7 +31,6 @@ public class MovieRepository {
 
     RetrofitApiInterface mWebservice;
 
-
     /**
      * I'm instantiating the dependency in the constructor. I know I should employ Dependency Injection here but
      * I simply couldn't figure out how to work with Dagger 2 and got frustrated.
@@ -43,6 +44,11 @@ public class MovieRepository {
         mWebservice = retrofit.create(RetrofitApiInterface.class);
 
         Log.d(TAG,"New Repository Created");
+    }
+
+
+    public static MovieRepository getMovieRepositoryInstance() {
+        return mSingletonRepository;
     }
 
 
@@ -86,14 +92,7 @@ public class MovieRepository {
 
                 Log.d(TAG, "Trailer was fetched for movie");
 
-
-                /*
-                    THE PROBLEM IS FUCKING HERE!
-
-                 */
                 trailers.postValue(response.body().getTrailerResults());
-                Log.d(TAG, String.valueOf(trailers.getValue() == null));
-
 
             }
 
@@ -111,8 +110,30 @@ public class MovieRepository {
 
     }
 
-    public static MovieRepository getMovieRepositoryInstance() {
+    public LiveData<List<Review>> fetchReviews(int movieId, String apiKey){
 
-        return mSingletonRepository;
+
+        Log.d(TAG, "fetch reviews was called");
+
+        MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
+
+        mWebservice.getReviews(movieId, apiKey).enqueue(new Callback<InitialReviewResponse>() {
+            @Override
+            public void onResponse(Call<InitialReviewResponse> call, Response<InitialReviewResponse> response) {
+
+
+                Log.d(TAG, "Reviews were fetched for movie");
+
+                reviews.postValue(response.body().getReviewResults());
+            }
+
+            @Override
+            public void onFailure(Call<InitialReviewResponse> call, Throwable t) {
+
+                Log.d(TAG, "Failure in fetching the movie reviews");
+            }
+        });
+
+        return reviews;
     }
 }

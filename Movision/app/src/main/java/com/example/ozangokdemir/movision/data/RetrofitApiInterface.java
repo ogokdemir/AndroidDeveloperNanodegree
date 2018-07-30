@@ -1,6 +1,7 @@
 package com.example.ozangokdemir.movision.data;
 
 import com.example.ozangokdemir.movision.models.InitialMovieResponse;
+import com.example.ozangokdemir.movision.models.InitialReviewResponse;
 import com.example.ozangokdemir.movision.models.InitialTrailerResponse;
 import com.example.ozangokdemir.movision.models.Movie;
 
@@ -20,5 +21,8 @@ public interface RetrofitApiInterface {
 
     @GET("movie/{movie_id}/videos")
     Call<InitialTrailerResponse> getTrailers(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
+
+    @GET("movie/{movie_id}/reviews")
+    Call<InitialReviewResponse> getReviews(@Path("movie_id") int movieId, @Query("api_key") String apiKey);
 
 }

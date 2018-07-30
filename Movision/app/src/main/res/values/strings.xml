@@ -2,7 +2,7 @@
     <string name="app_name">Movision</string>
 
     <!--Clients of my code can insert their own api key here -->
-    <string name="api_key">INSERT YOUR KEY HERE</string>
+    <string name="api_key">INSERT YOUR API KEY HERE </string>
 
 
 
@@ -35,11 +35,6 @@
     <string name="alert_dialog_positive_button">Try again</string>
     <string name="alert_dialog_negative_button">Exit App</string>
     <string name="image_content_decription">Picture for</string>
-
-
-
-
-
 
 
 
