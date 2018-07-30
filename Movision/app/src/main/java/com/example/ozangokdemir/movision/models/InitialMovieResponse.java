@@ -24,7 +24,7 @@ public class InitialMovieResponse {
 
 
 
-    public List<Movie> getResults() {
+    public List<Movie> getMovieResults() {
         return  mResults;
     }
 

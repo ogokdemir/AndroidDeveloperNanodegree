@@ -24,14 +24,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class MainActivity extends AppCompatActivity implements MovieItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private String mChoosenSortParameter;
+    private String mChosenSortParameter;
     @BindView(R.id.rw_grid_container) RecyclerView recyclerView;
-    private List<Movie> currentMovieList; // Cache for the current data source. Consider for ViewModel
     private com.example.ozangokdemir.movision.adapter.MovieAdapter adapter;
+    private MovieViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,23 +38,19 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
-        //Initial setup.
+        //Setting up the RecyclerView, it's data source will be set in the setupViewModel method.
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-
-        //initial data source is null, new data will be bound to the adapter after first fetchMovies() executes.
         adapter = new MovieAdapter(null, this);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
 
         if(savedInstanceState != null && savedInstanceState.getString(TAG)!= null)
-            mChoosenSortParameter = savedInstanceState.getString(TAG);
+            mChosenSortParameter = savedInstanceState.getString(TAG);
         else
-        mChoosenSortParameter = getString(R.string.sort_by_default);
+        mChosenSortParameter = getString(R.string.sort_by_default);
 
-        setupViewModel(mChoosenSortParameter);
+        setupViewModel(mChosenSortParameter);
     }
 
 
@@ -63,23 +58,17 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     private void setupViewModel(String chosenParameter){
 
         if(NetworkUtils.isOnline(this)) {
-            //MovieViewModelFactory factory = new MovieViewModelFactory(chosenParameter, getString(R.string.api_key));
-            //viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-            //This code will be executed in the background thanks to the LiveData library.
 
-            MovieViewModel viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-
+            viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
 
             viewModel.getMovies(chosenParameter, getString(R.string.api_key)).observe(this, movies -> {
 
-                currentMovieList = movies;
+                adapter.updateAdapterDataSource(movies);
 
-                adapter.updateAdapterDataSource(currentMovieList);
                 recyclerView.setAdapter(adapter);
             });
         }else
             notifyUserOfNoInternetConnection();
-
     }
 
 
@@ -102,24 +91,24 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
 
         switch (item.getItemId()){
             case R.id.action_sort_by_popularity:
-                mChoosenSortParameter = getString(R.string.sort_by_popular);
+                mChosenSortParameter = getString(R.string.sort_by_popular);
                 break;
 
             case R.id.action_sort_by_top_rated:
-                mChoosenSortParameter = getString(R.string.sort_by_top_rated);
+                mChosenSortParameter = getString(R.string.sort_by_top_rated);
                 break;
 
             case R.id.action_sort_by_now_playing:
-                mChoosenSortParameter = getString(R.string.sort_by_now_playing);
+                mChosenSortParameter = getString(R.string.sort_by_now_playing);
                 break;
 
             case R.id.action_sort_by_upcoming:
-                mChoosenSortParameter = getString(R.string.sort_by_upcoming);
+                mChosenSortParameter = getString(R.string.sort_by_upcoming);
                 break;
 
         }
 
-        setupViewModel(mChoosenSortParameter);
+        setupViewModel(mChosenSortParameter);
         return super.onOptionsItemSelected(item);
     }
 
@@ -132,15 +121,29 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     public void onMovieItemClick(int movieItemIdx) {
 
-        Parcelable wrappedMovie = Parcels.wrap(currentMovieList.get(movieItemIdx));
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
         Intent toDetailActivity = new Intent(this, DetailActivity.class);
-        toDetailActivity.putExtras(bundle);
-        startActivity(toDetailActivity);
+        Bundle bundle = new Bundle();
 
+        //It's OK to make a new call to the viewModel because it caches the result until the mChosenSortParameter changes.
+        List<Movie> displayedMovies = viewModel.getMovies(mChosenSortParameter, getString(R.string.api_key)).getValue();
+
+        //Parcel the movie object that was tapped by the user, to send it to the DetailActivity.
+        Parcelable wrappedMovie = Parcels.wrap(displayedMovies.get(movieItemIdx));
+
+        bundle.putParcelable(DetailActivity.MOVIE_INTENT_KEY, wrappedMovie);
+
+
+        //Fetch the trailers for the clicked movie using it's id, Parcel the result, and pass it over to the DetailActivity.
+        //When the trailers are loaded for the chosen movie, the DetailActivity gets started.
+        viewModel.getTrailers(displayedMovies.get(movieItemIdx).getId(), getString(R.string.api_key)).observe(this, trailers -> {
+
+            Parcelable wrappedTrailers = Parcels.wrap(trailers);
+            bundle.putParcelable(DetailActivity.TRAILERS_INTENT_KEY, wrappedTrailers);
+            toDetailActivity.putExtras(bundle);
+            startActivity(toDetailActivity);
+
+        });
     }
-
 
 
     /**
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
                         /*
                             User reconnected and wants to try again.
                          */
-                        setupViewModel(mChoosenSortParameter);
+                        setupViewModel(mChosenSortParameter);
                     }
                 })
                 .setNegativeButton(getString(R.string.alert_dialog_negative_button),new DialogInterface.OnClickListener() {
@@ -186,6 +189,6 @@ public class MainActivity extends AppCompatActivity implements MovieItemClickLis
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(TAG, mChoosenSortParameter);
+        outState.putString(TAG, mChosenSortParameter);
     }
 }

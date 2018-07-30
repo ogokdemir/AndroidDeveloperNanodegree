@@ -1,18 +1,24 @@
 package com.example.ozangokdemir.movision.data;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.ozangokdemir.movision.models.Movie;
+import com.example.ozangokdemir.movision.models.Trailer;
+
 import java.util.List;
 
 public class MovieViewModel extends ViewModel {
 
+    private static final String TAG = MovieViewModel.class.getSimpleName();
 
-    //Retrieved movies, wrapped in a ViewHolder so they survive lifecycle callbacks in the controller.
+    //Retrieved movies,trailers and reviews wrapped in a ViewHolder so they survive lifecycle callbacks in the controller.
 
     private LiveData<List<Movie>> mMovies;
+    private LiveData<List<Trailer>> mTrailers;
     private MovieRepository mRepository;
     private String previousCriteria;
 
@@ -25,7 +31,7 @@ public class MovieViewModel extends ViewModel {
     public MovieViewModel() {
 
         Log.d("MovieViewModel", "New View Model instance was created");
-        mRepository = new MovieRepository();
+        mRepository = MovieRepository.getMovieRepositoryInstance();
 
     }
 
@@ -38,9 +44,18 @@ public class MovieViewModel extends ViewModel {
         return mMovies;
     }
 
+    public  LiveData<List<Trailer>> getTrailers(int movieId, String apiKey){
 
-    public void forceMovieLoading(String criteria, String apiKey){
+        Log.d(TAG, "getTrailers was called");
 
+        mTrailers = mRepository.fetchTrailers(movieId, apiKey);
+        /*
+            THIS IS NULL, IT mTrailers doesn't get initialized for some reason.
+         */
+        Log.d(TAG, String.valueOf(mTrailers == null));
+
+        return mTrailers;
     }
+
 
  }

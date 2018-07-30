@@ -27,7 +27,7 @@ public class Movie {
     //Using @SerializedName for the GSON library to parse the raw json data into this object.
 
     @SerializedName("id")
-    String mId;
+    int mId;
     @SerializedName("title")
     String  mTitle;
     @SerializedName("poster_path")
@@ -66,7 +66,7 @@ public class Movie {
 
     public Movie() { }
 
-    public Movie(String id, String title, String posterUri,
+    public Movie(int id, String title, String posterUri,
                  String overview, double averageRating, String releaseDate,
                  boolean adult, List<Integer> genreIds, String originalTitle,
                  String originalLanguage, String backdropPath, Double popularity,
@@ -127,7 +127,7 @@ public class Movie {
         return mReleaseDate;
     }
 
-    public String getId() {return mId;}
+    public int getId() {return mId;}
 
 
     public boolean ismAdult() {
